@@ -14,8 +14,10 @@ namespace ContactZone.Infrastructure.Repositories
         }
 
         public async Task<IEnumerable<ContactDomain>> GetContactWithAllInformation()
-        {
+        { 
             return await _context.Contatos
+                .OrderBy(contact => contact.DDD)
+                .ThenBy(contact => contact.Id)
                 .ToListAsync();
         }
 
