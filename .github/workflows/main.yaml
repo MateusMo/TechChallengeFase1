@@ -17,3 +17,9 @@ jobs:
           cd /var/www/TechChallengeFase1
           sudo git reset --hard  # Descartar alterações locais
           sudo git pull origin master  # Puxar as últimas alterações do repositório remoto
+
+      - name: Run tests
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Application.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
