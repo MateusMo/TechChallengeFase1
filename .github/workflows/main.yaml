@@ -11,3 +11,9 @@ jobs:
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
+
+      - name: Discard local changes and pull the latest changes from master
+        run: |
+          cd /var/www/TechChallengeFase1
+          sudo git reset --hard  # Descartar alterações locais
+          sudo git pull origin master  # Puxar as últimas alterações do repositório remoto
