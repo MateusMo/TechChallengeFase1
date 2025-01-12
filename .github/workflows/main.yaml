@@ -18,8 +18,20 @@ jobs:
           sudo git reset --hard  # Descartar alterações locais
           sudo git pull origin master  # Puxar as últimas alterações do repositório remoto
 
-      - name: Run tests
+      - name: Run tests Application
         run: |
           cd /var/www/TechChallengeFase1/ContactZone.Application.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
+
+      - name: Run tests Api
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Api.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
+
+      - name: Run tests Infrastructure
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Infrastructure.Test  # Caminho correto dos testes
           sudo dotnet restore  # Restaurar dependências
           sudo dotnet test  # Rodar testes
