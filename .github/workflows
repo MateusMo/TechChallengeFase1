@@ -1,0 +1,13 @@
+name: CI with Self-Hosted Runner
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: self-hosted  # Usando o runner auto-hospedado
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
