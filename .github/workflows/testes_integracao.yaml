@@ -30,7 +30,7 @@ jobs:
 
       - name: Start application
         run: |
-          dotnet run --project ContactZone.API & sleep 10
+          dotnet run --project .\ContactZone.Api\ContactZone.Api.csproj & sleep 10
 
       - name: Run Robot Framework tests
         run: |
