@@ -20,6 +20,18 @@ jobs:
           pip install robotframework
           pip install robotframework-requests
 
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build application
+        run: dotnet build
+
+      - name: Start application
+        run: |
+          dotnet run --project ContactZone.API & sleep 10
+
       - name: Run Robot Framework tests
         run: |
           robot -d ./IntegrationTests/results/ IntegrationTests/IntegrationTests.robot
