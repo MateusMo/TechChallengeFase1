@@ -1,4 +1,4 @@
-name: Robot Framework Tests
+name: .NET CI Pipeline
 
 on: [push]
 
@@ -26,32 +26,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Check out the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Discard local changes and pull the latest changes from master
-        run: |
-          cd /var/www/TechChallengeFase1
-          sudo git reset --hard  # Descartar alterações locais
-          sudo git pull origin master  # Puxar as últimas alterações do repositório remoto
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0"
 
-      - name: Run tests Application
-        run: |
-          cd /var/www/TechChallengeFase1/ContactZone.Application.Test  # Caminho correto dos testes
-          sudo dotnet restore  # Restaurar dependências
-          sudo dotnet test  # Rodar testes
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Run tests Api
-        run: |
-          cd /var/www/TechChallengeFase1/ContactZone.Api.Test  # Caminho correto dos testes
-          sudo dotnet restore  # Restaurar dependências
-          sudo dotnet test  # Rodar testes
-
-      - name: Run tests Infrastructure
-        run: |
-          cd /var/www/TechChallengeFase1/ContactZone.Infrastructure.Test  # Caminho correto dos testes
-          sudo dotnet restore  # Restaurar dependências
-          sudo dotnet test  # Rodar testes
+      - name: Run Unit Tests
+        run: dotnet test --no-restore --configuration Release
 
   integration-tests:
     runs-on: ubuntu-latest
