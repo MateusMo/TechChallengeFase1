@@ -3,9 +3,59 @@ name: Robot Framework Tests
 on: [push]
 
 jobs:
-  robot-tests:
+  build:
+    name: Build the Project
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v3
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --no-restore --configuration Release
+
+  unit-tests:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Discard local changes and pull the latest changes from master
+        run: |
+          cd /var/www/TechChallengeFase1
+          sudo git reset --hard  # Descartar alterações locais
+          sudo git pull origin master  # Puxar as últimas alterações do repositório remoto
+
+      - name: Run tests Application
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Application.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
+
+      - name: Run tests Api
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Api.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
+
+      - name: Run tests Infrastructure
+        run: |
+          cd /var/www/TechChallengeFase1/ContactZone.Infrastructure.Test  # Caminho correto dos testes
+          sudo dotnet restore  # Restaurar dependências
+          sudo dotnet test  # Rodar testes
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: unit-tests
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,16 +69,6 @@ jobs:
         run: |
           pip install robotframework
           pip install robotframework-requests
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: Start application
-        run: |
-          dotnet run --project ContactZone.Api & sleep 10
-          cat app.log
 
       - name: Run Robot Framework tests
         run: |
