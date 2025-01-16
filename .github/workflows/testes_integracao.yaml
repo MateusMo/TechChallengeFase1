@@ -15,6 +15,14 @@ jobs:
         with:
           dotnet-version: "8.0"
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -34,6 +42,14 @@ jobs:
         with:
           dotnet-version: "8.0"
 
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -47,6 +63,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "8.0"
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Run API
+        run: |
+          cd ContactZone.Api
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet run --urls "http://localhost:8080" &
+
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -59,4 +95,4 @@ jobs:
 
       - name: Run Robot Framework tests
         run: |
-          robot -d ./IntegrationTests/results/ IntegrationTests/IntegrationTests.robot
+          robot -d ./IntegrationTests/results/ IntegrationTests/tests/IntegrationTests.robot
