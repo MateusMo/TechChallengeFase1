@@ -1,5 +1,7 @@
 *** Settings ***
 Resource          ../resources/base.resource
+Library           Collections
+Library           JSONLibrary
 
 *** Keywords ***
 Criar sessão na api
@@ -22,3 +24,9 @@ Validar status code e mensagem no response
     [Arguments]    ${status_code}    ${message}
     Should Be Equal As Strings    ${response.status_code}    ${status_code}
     Should Be Equal As Strings    ${response.json()["title"]}    ${message}
+
+Validar status code e response body conforme dados inputados
+    [Arguments]    ${status_code}
+    Should Be Equal As Strings    ${response.status_code}    ${status_code}
+    ${body}    Convert String to JSON    ${body}
+    Dictionary Should Contain Sub Dictionary    ${response.json()}    ${body}

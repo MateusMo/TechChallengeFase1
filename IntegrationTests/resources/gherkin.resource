@@ -9,5 +9,12 @@ Quando eu realizar um "POST" no endpoint "${endpoint}" com os dados inválidos d
     Gerar body de request com arquivo selecionado    dados_invalidos
     Realizar POST no endpoint indicado    ${endpoint}    ${body}
 
+Quando eu realizar um "POST" no endpoint "/api/Contact" com os dados válidos de contato
+    Gerar body de request com arquivo selecionado    dados_validos
+    Realizar POST no endpoint indicado    /api/Contact    ${body}
+
 Então o sistema retornará o status code "${status_code}" e a mensagem "${message}"
     Validar status code e mensagem no response    ${status_code}    ${message}
+
+Então o sistema retornará o status code "${status_code}" e o response com os dados inputados
+    Validar status code e response body conforme dados inputados    ${status_code}
