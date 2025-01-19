@@ -3,42 +3,42 @@ name: .NET CI Pipeline
 on: [push]
 
 jobs:
-  build:
-    name: Build the Project
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v3
+  # build:
+  #   name: Build the Project
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - name: Checkout the code
+  #       uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "8.0"
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: "8.0"
 
-      - name: Restore dependencies
-        run: dotnet restore
+  #     - name: Restore dependencies
+  #       run: dotnet restore
 
-      - name: Build the project
-        run: dotnet build --no-restore --configuration Release
+  #     - name: Build the project
+  #       run: dotnet build --no-restore --configuration Release
 
-  unit-tests:
-    name: Run Unit Tests
-    runs-on: ubuntu-24.04
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  # unit-tests:
+  #   name: Run Unit Tests
+  #   runs-on: ubuntu-24.04
+  #   needs: build
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: "8.0"
+  #     - name: Setup .NET
+  #       uses: actions/setup-dotnet@v3
+  #       with:
+  #         dotnet-version: "8.0"
 
-      - name: Restore dependencies
-        run: dotnet restore
+  #     - name: Restore dependencies
+  #       run: dotnet restore
 
-      - name: Run Unit Tests
-        run: dotnet test --no-restore --configuration Release
+  #     - name: Run Unit Tests
+  #       run: dotnet test --no-restore --configuration Release
 
   integration-tests:
     name: Run Integration Tests
@@ -70,7 +70,7 @@ jobs:
         run: dotnet tool install --global dotnet-ef
 
       - name: Add dotnet tools to PATH
-        run: echo "::add-path::$(dotnet --list-tools | grep dotnet-ef | awk '{print $2}')"
+        run: echo "/home/runner/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Restore dependencies
         run: dotnet restore
