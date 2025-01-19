@@ -66,6 +66,15 @@ jobs:
         with:
           dotnet-version: "8.0"
 
+      - name: Install dotnet-ef tool
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Add dotnet tools to PATH
+        run: echo "::add-path::$(dotnet --list-tools | grep dotnet-ef | awk '{print $2}')"
+
+      - name: Restore dependencies
+        run: dotnet restore
+
       - name: Update Database
         run: |
           cd ContactZone.Infrastructure
