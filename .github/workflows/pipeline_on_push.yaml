@@ -43,7 +43,7 @@ jobs:
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-24.04
-    needs: unit-tests
+    # needs: unit-tests
     services:
       mssql:
         image: mcr.microsoft.com/mssql/server:2019-latest
