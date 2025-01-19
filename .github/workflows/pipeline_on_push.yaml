@@ -44,6 +44,19 @@ jobs:
     name: Run Integration Tests
     runs-on: ubuntu-24.04
     needs: unit-tests
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+          - 1433:1433
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: "@Sql2019"
+        options: >-
+          --health-cmd "exit 0" 
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -52,6 +65,11 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "8.0"
+
+      - name: Update Database
+        run: |
+          cd ContactZone.Infrastructure
+          dotnet ef database update
 
       - name: Run API
         run: |
