@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ContactZone.Domain.Domains;
+﻿using ContactZone.Domain.Domains;
 
 namespace ContactZone.Api.Dtos
 {
