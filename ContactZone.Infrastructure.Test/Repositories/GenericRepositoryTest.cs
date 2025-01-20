@@ -121,6 +121,7 @@ namespace ContactZone.Infrastructure.Test.Repositories
 
             var result = await _repository.GetByIdAsync(1);
             Assert.Equal("João Silva", result.Name);
+
         }
     }
 }
