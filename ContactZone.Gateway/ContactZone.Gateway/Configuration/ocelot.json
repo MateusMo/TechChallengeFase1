@@ -1,0 +1,52 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5263",
+    "RateLimitOptions": {
+      "ClientWhitelist": [],
+      "EnableRateLimiting": true,
+      "Period": "1s",
+      "PeriodTimespan": 1,
+      "Limit": 10
+    }
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/contacts/ddd/{ddd}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7270
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contacts/ddd/{ddd}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "PeriodTimespan": 60,
+        "Limit": 30
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/contacts/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7270
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contacts/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "RateLimitOptions": {
+        "ClientWhitelist": [],
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "PeriodTimespan": 60,
+        "Limit": 30
+      }
+    }
+  ]
+}
