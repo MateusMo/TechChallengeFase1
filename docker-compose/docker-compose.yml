@@ -34,3 +34,16 @@ services:
     depends_on:
       - mssql
       - rabbitmq
+
+  atualizacontatos:
+    container_name: atualizacontatos
+    image: mateusmo/atualizacontato:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
+      - RABBITMQ_HOST=rabbitmq://rabbitmq
+    ports:
+      - "8081:8080"  
+    depends_on:
+      - mssql
+      - rabbitmq
