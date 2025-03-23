@@ -47,3 +47,17 @@ services:
     depends_on:
       - mssql
       - rabbitmq
+
+
+  getcontacts:
+    container_name: getcontacts
+    image: otaviofaria/getcontacts:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=""
+      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - SqlConnectionString=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
+    ports:
+      - "8083:8080"  
+    depends_on:
+      - mssql
