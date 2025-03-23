@@ -22,9 +22,9 @@ services:
     ports:
       - 1433:1433
 
-  cadastrocontatos:
-    container_name: cadastrocontatos
-    image: leonardodfg12/cadastrocontatos:latest
+  criarcontato:
+    container_name: criarcontato
+    image: leonardodfg12/criarcontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
