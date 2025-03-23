@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContactZone.Infrastructure", "..\..\ContactZone.Infrastructure\ContactZone.Infrastructure.csproj", "{30AF2989-3BEB-183A-22D3-9787FA1BED20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GetContacts", "GetContacts\GetContacts.csproj", "{A3CF8426-7ADD-3F98-9678-2E3E2A3FA8F2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{30AF2989-3BEB-183A-22D3-9787FA1BED20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30AF2989-3BEB-183A-22D3-9787FA1BED20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30AF2989-3BEB-183A-22D3-9787FA1BED20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30AF2989-3BEB-183A-22D3-9787FA1BED20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3CF8426-7ADD-3F98-9678-2E3E2A3FA8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3CF8426-7ADD-3F98-9678-2E3E2A3FA8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3CF8426-7ADD-3F98-9678-2E3E2A3FA8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3CF8426-7ADD-3F98-9678-2E3E2A3FA8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1F3CF69-AE99-41B9-9268-C3307FE0D27C}
+	EndGlobalSection
+EndGlobal
