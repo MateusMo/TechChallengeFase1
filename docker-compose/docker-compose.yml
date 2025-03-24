@@ -35,8 +35,8 @@ services:
       - mssql
       - rabbitmq
 
-  atualizaContatosProdutor:  # Nome alterado
-    container_name: atualizaContatosProdutor  # Nome alterado
+  atualizacontatosprodutor:  
+    container_name: atualizacontatosprodutor 
     image: mateusmo/atualizacontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -48,8 +48,8 @@ services:
       - mssql
       - rabbitmq
 
-  atualizaContatosConsumidor:  # Nome alterado
-    container_name: atualizaContatosConsumidor  # Nome alterado
+  atualizacontatosconsumidor:  
+    container_name: atualizacontatosconsumidor 
     build:
       context: .
       dockerfile: Dockerfile.Consumidor
