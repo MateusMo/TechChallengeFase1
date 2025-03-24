@@ -11,6 +11,11 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   mssql:
     container_name: sqlserver
@@ -21,19 +26,26 @@ services:
       MSSQL_SA_PASSWORD: "@Sql2019"
     ports:
       - 1433:1433
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "@Sql2019" -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 20
 
   criarcontato:
     container_name: criarcontato
     image: leonardodfg12/criarcontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
-      - RABBITMQ_HOST=rabbitmq://rabbitmq
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
+      - RABBITMQ_HOST=rabbitmq
     ports:
       - "8080:8080"
     depends_on:
-      - mssql
-      - rabbitmq
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   atualizacontatosprodutor:
     container_name: atualizacontatosprodutor
@@ -41,13 +53,15 @@ services:
     entrypoint: ["dotnet", "/app/produtor/Produtor.dll"]
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
-      - RABBITMQ_HOST=rabbitmq://rabbitmq
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
+      - RABBITMQ_HOST=rabbitmq  
     ports:
       - "8081:8080"
     depends_on:
-      - mssql
-      - rabbitmq
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
 
   atualizacontatosconsumidor:
     container_name: atualizacontatosconsumidor
@@ -55,8 +69,10 @@ services:
     entrypoint: ["dotnet", "/app/consumidor/Consumidor.dll"]
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
-      - RABBITMQ_HOST=rabbitmq://rabbitmq
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
+      - RABBITMQ_HOST=rabbitmq 
     depends_on:
-      - mssql
-      - rabbitmq
+      mssql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
