@@ -1,6 +1,5 @@
 {
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5263",
     "RateLimitOptions": {
       "ClientWhitelist": [],
       "EnableRateLimiting": true,
@@ -15,38 +14,86 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7270
+          "Host": "buscarcontatos",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/contacts/ddd/{ddd}",
-      "UpstreamHttpMethod": [ "Get" ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 30
-      }
+      "UpstreamHttpMethod": [ "Get" ]
     },
     {
       "DownstreamPathTemplate": "/api/contacts/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7270
+          "Host": "buscarcontatos",
+          "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/api/contacts/{id}",
       "UpstreamHttpMethod": [ "Get" ],
-      "RateLimitOptions": {
-        "ClientWhitelist": [],
-        "EnableRateLimiting": true,
-        "Period": "1m",
-        "PeriodTimespan": 60,
-        "Limit": 30
-      }
+      "Key": "GetContactById"
+    },
+    {
+      "DownstreamPathTemplate": "/api/criar-contato-mensageria",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "criarcontato",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/criar-contato-mensageria",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/criar-contato-api",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "criarcontato",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/criar-contato-api",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/listar-contatos",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "criarcontato",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/listar-contatos",
+      "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/contacts/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "atualizacontatos",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/contacts/{id}",
+      "UpstreamHttpMethod": [ "Put" ],
+      "Key": "UpdateContactById"
+    },
+    {
+      "DownstreamPathTemplate": "/api/dlq",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "dlqreader",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/dlq",
+      "UpstreamHttpMethod": [ "Get" ]
     }
   ]
 }

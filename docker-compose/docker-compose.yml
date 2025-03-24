@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -24,6 +22,7 @@ services:
 
   criarcontato:
     container_name: criarcontato
+    hostname: criarcontato
     image: leonardodfg12/criarcontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -37,6 +36,7 @@ services:
 
   atualizacontatos:
     container_name: atualizacontatos
+    hostname: atualizacontatos
     image: mateusmo/atualizacontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -50,6 +50,7 @@ services:
 
   buscarcontatos:
     container_name: buscarcontatos
+    hostname: buscarcontatos
     image: otaviofaria/buscarcontatos:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -63,6 +64,7 @@ services:
 
   dlqreader:
     container_name: dlqreader
+    hostname: dlqreader
     image: otaviofaria/dlqreader:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -79,3 +81,16 @@ services:
     depends_on:
       - rabbitmq
       - mssql
+
+  gateway:
+    container_name: gateway
+    image: otaviofaria/gateway:latest
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+    - "8085:8080"
+    depends_on:
+    - buscarcontatos
+    - criarcontato
+    - atualizacontatos
+    - dlqreader
