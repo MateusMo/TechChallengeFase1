@@ -2,6 +2,7 @@ using ContactZone.Infrastructure.Data;
 using GetContacts.Repositories;
 using GetContacts.Services;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Extensions.OpenApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,6 +21,7 @@ var host = new HostBuilder()
         services.AddScoped<IContactRepository, ContactRepository>();
         services.AddScoped<IContactService, ContactService>();
     })
+    .ConfigureOpenApi()
     .Build();
 
 host.Run();

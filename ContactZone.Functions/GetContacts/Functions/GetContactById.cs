@@ -1,13 +1,12 @@
 ﻿using ContactZone.Domain.Domains;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
-using System.Net;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using GetContacts.Dtos;
 using GetContacts.Services;
-using System.Text.Json;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System.Net;
 
 namespace GetContacts.Functions
 {
@@ -23,6 +22,11 @@ namespace GetContacts.Functions
         }
 
         [Function("GetContactById")]
+        [OpenApiOperation(operationId: "GetContactById", tags: new[] { "Contacts" }, Summary = "Get a contact by ID", Description = "This retrieves a contact by its ID")]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The contact ID", Description = "The unique identifier for the contact")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(ContactDto), Summary = "Successful operation", Description = "Returns the contact details")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Contact not found", Description = "The contact with the specified ID was not found")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid ID", Description = "The ID must be a positive value")]
         public async Task<HttpResponseData> GetContactById(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contacts/{id}")] HttpRequestData req,
             int id)

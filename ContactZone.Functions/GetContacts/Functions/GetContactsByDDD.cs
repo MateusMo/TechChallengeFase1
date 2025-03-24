@@ -1,12 +1,12 @@
 ﻿using ContactZone.Domain.Domains;
-using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Extensions.Logging;
-using System.Net;
-using System.Threading.Tasks;
-using System.Collections.Generic;
 using GetContacts.Dtos;
 using GetContacts.Services;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System.Net;
 
 namespace GetContacts.Functions
 {
@@ -22,6 +22,10 @@ namespace GetContacts.Functions
         }
 
         [Function("GetContactsByDDD")]
+        [OpenApiOperation(operationId: "GetContactsByDDD", tags: new[] { "Contacts" }, Summary = "Get contacts by DDD", Description = "This retrieves contacts filtered by DDD (area code)")]
+        [OpenApiParameter(name: "ddd", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The DDD code", Description = "The area code to filter contacts. Use 0 to get all contacts.")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IEnumerable<ContactDto>), Summary = "Successful operation", Description = "Returns the list of contacts")]
+        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid DDD", Description = "DDD cannot be negative")]
         public async Task<HttpResponseData> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contacts/ddd/{ddd}")] HttpRequestData req,
             int ddd)
