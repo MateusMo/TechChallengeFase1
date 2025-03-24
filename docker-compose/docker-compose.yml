@@ -42,10 +42,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      mssql:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+      - mssql
+      - rabbitmq
 
   atualizacontatosprodutor:
     container_name: atualizacontatosprodutor
@@ -58,7 +56,6 @@ services:
     ports:
       - "8081:8080"
     depends_on:
-      mssql:
       - mssql
       - rabbitmq
 
