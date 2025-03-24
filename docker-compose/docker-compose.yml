@@ -38,7 +38,7 @@ services:
   atualizacontatosprodutor:
     container_name: atualizacontatosprodutor
     image: mateusmo/atualizacontato:latest
-    entrypoint: ["dotnet", "/app/produtor/Produtor.dll"]  
+    entrypoint: ["dotnet", "produtor/Produtor.dll"]  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
@@ -49,10 +49,10 @@ services:
       - mssql
       - rabbitmq
 
-  atualizacontatosconsumidor:
+atualizacontatosconsumidor:
     container_name: atualizacontatosconsumidor
     image: mateusmo/atualizacontato:latest
-    entrypoint: ["dotnet", "/app/consumidor/Consumidor.dll"]  
+    entrypoint: ["dotnet", "consumidor/Consumidor.dll"]  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
@@ -60,3 +60,4 @@ services:
     depends_on:
       - mssql
       - rabbitmq
+    # Sem portas (worker service)
