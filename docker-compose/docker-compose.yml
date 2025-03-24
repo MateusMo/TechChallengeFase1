@@ -35,9 +35,10 @@ services:
       - mssql
       - rabbitmq
 
-  atualizacontatosprodutor:  
-    container_name: atualizacontatosprodutor 
-    image: mateusmo/atualizacontato:latest
+  atualizacontatosprodutor:
+    container_name: atualizacontatosprodutor
+    image: mateusmo/atualizacontato:latest  
+    entrypoint: ["dotnet", "Produtor.dll"]  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
@@ -48,11 +49,10 @@ services:
       - mssql
       - rabbitmq
 
-  atualizacontatosconsumidor:  
-    container_name: atualizacontatosconsumidor 
-    build:
-      context: .
-      dockerfile: Dockerfile.Consumidor
+  atualizacontatosconsumidor:
+    container_name: atualizacontatosconsumidor
+    image: mateusmo/atualizacontato:latest  
+    entrypoint: ["dotnet", "Consumidor.dll"]  
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;MultipleActiveResultSets=true;Encrypt=YES;TrustServerCertificate=YES
