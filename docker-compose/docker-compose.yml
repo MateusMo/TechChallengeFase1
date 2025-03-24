@@ -48,24 +48,12 @@ services:
   atualizacontatosprodutor:
     container_name: atualizacontatosprodutor
     image: mateusmo/atualizacontato:latest
-    entrypoint: ["dotnet", "produtor/Produtor.dll"] # Caminho relativo corrigido
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
       - RABBITMQ_HOST=rabbitmq
     ports:
-      - "8081:8080"
-    depends_on:
-      - mssql
-      - rabbitmq
-  atualizacontatosconsumidor:
-    container_name: atualizacontatosconsumidor
-    image: mateusmo/atualizacontato:latest
-    entrypoint: ["dotnet", "consumidor/Consumidor.dll"] # Caminho relativo corrigido
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
-      - RABBITMQ_HOST=rabbitmq
+      - "8081:8080"  
     depends_on:
       - mssql
       - rabbitmq
