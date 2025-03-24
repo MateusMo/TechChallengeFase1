@@ -28,7 +28,7 @@ namespace GetContacts.Functions
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Contact not found", Description = "The contact with the specified ID was not found")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid ID", Description = "The ID must be a positive value")]
         public async Task<HttpResponseData> GetContactById(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contacts/{id}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contacts/{id}")] HttpRequestData req,
             int id)
         {
             _logger.LogInformation($"C# HTTP trigger function processed a request to get contact with ID: {id}");

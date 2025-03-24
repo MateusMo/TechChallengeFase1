@@ -13,7 +13,7 @@ namespace GetContacts.Config
             Description = "API for managing contacts in the Contact Zone system",
             Contact = new OpenApiContact()
             {
-                Name = "Renato Groffe",
+                Name = "Pós FIAP",
                 Url = new Uri("https://github.com/MateusMo/TechChallengeFase1"),
             }
         };

@@ -1,0 +1,51 @@
+# Estágio de build - usa SDK do .NET 8.0
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copiar apenas os arquivos de projeto primeiro para aproveitar o cache de camadas do Docker
+COPY ["ContactZone.Domain/ContactZone.Domain.csproj", "ContactZone.Domain/"]
+COPY ["ContactZone.Application/ContactZone.Application.csproj", "ContactZone.Application/"]
+COPY ["ContactZone.Infrastructure/ContactZone.Infrastructure.csproj", "ContactZone.Infrastructure/"]
+COPY ["ContactZone.Functions/GetContacts/GetContacts.csproj", "ContactZone.Functions/GetContacts/"]
+
+# Criar um arquivo nuget.config temporário para evitar problemas com caminhos do Windows
+RUN echo '<?xml version="1.0" encoding="utf-8"?>\
+<configuration>\
+  <packageSources>\
+    <clear />\
+    <add key="nuget.org" value="https://api.nuget.org/v3/index.json" />\
+  </packageSources>\
+  <fallbackPackageFolders>\
+    <clear />\
+  </fallbackPackageFolders>\
+</configuration>' > /src/nuget.config
+
+# Restaurar dependências
+RUN dotnet restore "ContactZone.Functions/GetContacts/GetContacts.csproj" --configfile /src/nuget.config
+
+# Copiar o código fonte
+COPY ["ContactZone.Domain/", "ContactZone.Domain/"]
+COPY ["ContactZone.Application/", "ContactZone.Application/"]
+COPY ["ContactZone.Infrastructure/", "ContactZone.Infrastructure/"]
+COPY ["ContactZone.Functions/GetContacts/", "ContactZone.Functions/GetContacts/"]
+
+# Publicar a aplicação
+WORKDIR "/src/ContactZone.Functions/GetContacts"
+RUN dotnet publish "GetContacts.csproj" -c Release -o /app/publish \
+    /p:UseAppHost=false \
+    /p:PublishReadyToRun=true \
+    /p:PublishTrimmed=false
+
+# Imagem final - usa a imagem base específica para Azure Functions
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
+WORKDIR /home/site/wwwroot
+
+# Copiar os arquivos publicados
+COPY --from=build /app/publish .
+
+# Configurar variáveis de ambiente para Azure Functions
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
+# Expor a porta 80 (padrão para Azure Functions)
+EXPOSE 80
