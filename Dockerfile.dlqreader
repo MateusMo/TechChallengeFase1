@@ -1,0 +1,27 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
+
+# Copy csproj and restore dependencies
+COPY ["ContactZone.Functions/DLQReader/DLQReader.csproj", "."]
+RUN dotnet restore "./DLQReader.csproj"
+
+# Copy everything else and build
+COPY ContactZone.Functions/DLQReader/ .
+RUN dotnet build "DLQReader.csproj" -c Release -o /app/build
+
+# Publish the application
+FROM build AS publish
+RUN dotnet publish "DLQReader.csproj" -c Release -o /app/publish
+
+# Build runtime image
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
+WORKDIR /home/site/wwwroot
+COPY --from=publish /app/publish .
+
+# Set environment variables
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
+    FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+
+# Expose the port
+EXPOSE 80

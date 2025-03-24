@@ -34,6 +34,7 @@ services:
 
   criarcontato:
     container_name: criarcontato
+    hostname: criarcontato
     image: leonardodfg12/criarcontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -57,3 +58,50 @@ services:
     depends_on:
       - mssql
       - rabbitmq
+
+  buscarcontatos:
+    container_name: buscarcontatos
+    hostname: buscarcontatos
+    image: otaviofaria/buscarcontatos:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=""
+      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - SqlConnectionString=Server=sqlserver;Database=ContactZone;User Id=sa;Password=@Sql2019;Encrypt=YES;TrustServerCertificate=YES
+    ports:
+      - "8083:80"
+    depends_on:
+      - mssql
+
+  dlqreader:
+    container_name: dlqreader
+    hostname: dlqreader
+    image: otaviofaria/dlqreader:latest
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - AzureWebJobsStorage=""
+      - FUNCTIONS_WORKER_RUNTIME=dotnet-isolated
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_DLQ_NAME=criar-contato-queue_error
+      - RabbitMQConnection=amqp://guest:guest@rabbitmq:5672
+    ports:
+      - "8084:80"
+    depends_on:
+      - rabbitmq
+      - mssql
+
+  gateway:
+    container_name: gateway
+    image: otaviofaria/gateway:latest
+    environment:
+    - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+    - "8085:8080"
+    depends_on:
+    - buscarcontatos
+    - criarcontato
+    - atualizacontatosprodutor
+    - dlqreader
