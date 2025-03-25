@@ -48,6 +48,7 @@ services:
 
   atualizacontatosprodutor:
     container_name: atualizacontatosprodutor
+    hostname: atualizacontatosprodutor
     image: mateusmo/atualizacontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -61,6 +62,7 @@ services:
 
   deletarcontato:
     container_name: deletarcontato
+    hostname: deletarcontato
     image: leonardodfg12/deletarcontato:latest
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -118,3 +120,4 @@ services:
     - criarcontato
     - atualizacontatosprodutor
     - dlqreader
+    - deletarcontato

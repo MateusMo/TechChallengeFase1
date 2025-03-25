@@ -5,7 +5,7 @@
       "EnableRateLimiting": true,
       "Period": "1s",
       "PeriodTimespan": 1,
-      "Limit": 10
+      "Limit": 3
     }
   },
   "Routes": [
@@ -71,7 +71,7 @@
       "UpstreamHttpMethod": [ "Get" ]
     },
     {
-      "DownstreamPathTemplate": "/api/contacts/{id}",
+      "DownstreamPathTemplate": "/api/Atualizar",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -79,21 +79,44 @@
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/api/contacts/{id}",
-      "UpstreamHttpMethod": [ "Put" ],
-      "Key": "UpdateContactById"
-    },
+      "UpstreamPathTemplate": "/api/Atualizar",
+      "UpstreamHttpMethod": [ "Put" ]
+    },    
     {
-      "DownstreamPathTemplate": "/api/dlq",
+      "DownstreamPathTemplate": "/api/Atualizar",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "dlqreader",
+          "Host": "atualizacontatos",
           "Port": 8080
         }
       ],
-      "UpstreamPathTemplate": "/api/dlq",
+      "UpstreamPathTemplate": "/api/Atualizar",
       "UpstreamHttpMethod": [ "Get" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/deletar-contato-mensageria/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "deletarcontato",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/deletar-contato-mensageria/{id}",
+      "UpstreamHttpMethod": [ "Post" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/deletar-contato-mensageria/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "deletarcontato",
+          "Port": 8080
+        }
+      ],
+      "UpstreamPathTemplate": "/api/deletar-contato-mensageria/{id}",
+      "UpstreamHttpMethod": [ "Delete" ]
     }
   ]
 }
